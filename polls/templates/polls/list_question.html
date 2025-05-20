@@ -1,0 +1,53 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+
+<a href="{% url 'polls:create_question' %}" class="btn btn-success mb-5" title="Add a new Question">
+    <i class="fas fa-plus"></i>
+</a>
+
+{% if latest_question_list %}
+    <table class="table table-striped ">
+        <thead>
+            <h3>
+                Question list
+            </h3>
+            <tr>
+                <th>ID</th>
+                <th>Question</th>
+                <th>Number of Choice</th>
+                <th>Action</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in latest_question_list %}
+                <tr>
+                    <td>{{ question.id }}</td>
+                    <td><a href="{% url 'polls:read_question' question.id %}">{{ question.question_text }}</a></td>
+                    <td>{{ question.choice_set.count }} </td> <!-- تعداد جواب‌ها -->
+                    <td>
+                        {{ question.pub_date|date:"F j, Y" }}
+                    </td>
+                    <td>
+
+                        <a href="{% url 'polls:update_question' question.id %}" class="btn btn-primary" title="Update Question">
+                         <i class="fa fa-edit"></i>
+                         </a>
+
+                        <a href="{% url 'polls:delete_question' question.id %}" class="btn btn-danger" title="Delete Question">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        
+                    </td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+{% load static %}
+<!-- <link rel="stylesheet" href="{% static 'polls/style.css' %}"> -->
+{% endblock %}
